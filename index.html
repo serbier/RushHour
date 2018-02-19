@@ -2,6 +2,9 @@
 <head>
 	<meta charset="UTF-8">
 	<script language="javascript" type="text/javascript" src="./main.js"></script>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<title>Rush Hour</title>
 </head>
 <style type="text/css">
@@ -14,6 +17,38 @@
 	}
 </style>
 <body>
-<canvas id="canvas"></canvas>
+<div class="container">
+	<div class="row"> 
+		<div class="col-lg-8"> <canvas id="canvas"></canvas> </div>
+		<div class="col-lg-4"> 
+			<div class="row">
+				<div class="col-lg-12"> 
+				<div class="card">
+					<div class="card-header">ESTACIONES</div>
+					<div class="card-body" id="estaciones">
+						
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6"> 
+			<div class="card">
+					<div class="card-header">ALIMENTADORES</div>
+					<div class="card-body btn-toolbar" id="alimentadores" >
+					</div>
+			</div>
+		</div>
+		<div class="col-lg-6"> 
+			<div class="card">
+					<div class="card-header">PASAJEROS</div>
+					<div class="card-body" id="pasajeros"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 </body>
 </html>
