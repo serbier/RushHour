@@ -1,5 +1,5 @@
 var Alimentador = {
-	create: function(id, estacion){
+	create: function(id){
 		var obj = Object.create(this);
 		this.id = id;
 		this.startTime = 0;
@@ -17,21 +17,25 @@ var Alimentador = {
 				this.state = true;
 				}
 			};
+		return obj;
 		}
 };	
 
 
 var Pasajero = {
-	create: function(estacion){
+	create: function(){
 		var obj = Object.create(this);
 		this.initialTime = new Date();
 		this.angerTime = Math.floor(Math.random()*15000);
 		this.isAnger = function(){
 			currentTime = new Date();
-			if (currentTime - initialTime >= this.angerTime){
+			if (currentTime - this.initialTime >= this.angerTime){
 				return true;
+			}
+			else {
+				return false;
 			};
-		estacion.currentUsers.push(this);
+		return obj;
 		};
 	}
 };
@@ -41,21 +45,60 @@ var Estacion = {
 		this.id = id;
 		this.timeRute = timeRute;
 		this.currentUsers = [];
+		this.associatedAlim = [];
+	return obj;
 	}
 };
 
-
+var Portal = {
+	create: function(){
+		var obj = Object.create(this);
+		this.estaciones = {};
+	return obj;
+	}
+}
 
 
 window.onload = function () {
 	var canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
-		width = canvas.width = window.innerWidth,
-		height = canvas.height = window.innerHeight;
+		width = canvas.width = 750 ,
+		height = canvas.height = 580,
+		portal = new Portal.create(),
+		nEst = ['Ciudadela Colsubsidio','Cortijo','Garces Navas','Bochica','Bolivia','Calle 80', 'Quirigua', 'Alamos','Villas de granada','Bolivia-Bochica', 'Villas del dorado'],
+		buttons = [];
+
+		for (let i in nEst){
+			var button;
+			var nAlimen = Math.floor(Math.random()*10);
+			portal.estaciones[nEst[i]] = new Estacion.create(nEst[i],15000);
+			for (var j = 0; j<= nAlimen; j++){
+				portal.estaciones[nEst[i]].associatedAlim.push(new Alimentador.create(j));
+			}
+			button = $("<button type=\"button\" class=\"btn btn-primary btn-sm list-group-item list-group-item-action\"></button>").text(nEst[i]);
+			button.attr('id',nEst[i]);
+			button.click(function(){
+				$("#alimentadores").empty();
+				var estacion = portal.estaciones[nEst[i]];
+				for(var alimen in estacion.associatedAlim){
+					content = $("<button type=\"button\" class=\"btn btn-primary btn-sm  \"></button>").text(alimen);
+					$("#alimentadores").append(content);
+				}
+			});
+			$("#estaciones").append(button);
+			
+
+
+
+
 	
 	update();
 	function update(){
-		context.clearRect(-width/2,-height/2,width,height);
+		context.clearRect(0,0,width,height);
+		context.rect(0,0,width,height);
+		context.fill();
+		
+		}
 	}
 	requestAnimationFrame(update);
 };
