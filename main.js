@@ -68,26 +68,27 @@ window.onload = function () { // función que dirá que hacer apenas cargue la p
 		width = canvas.width = 750 , //ancho  del canvas
 		height = canvas.height = 580, // alto del canvas
 		portal = new Portal.create(), // se crea una instancia del objeto portal
+	    	background = new Image(),
 		nEst = ['Ciudadela Colsubsidio','Cortijo','Garces Navas','Bochica','Bolivia','Calle 80', 'Quirigua', 'Alamos','Villas de granada','Bolivia-Bochica', 'Villas del dorado'], // se defien los ids de cada estacion
-
-		for (let i in nEst){ // se utiliza el let para declarar a i como una variable global, se itera por cada id de las estaciones para crear instancias de objeto estacion
-			var button; 
-			var nAlimen = Math.floor(Math.random()*10); // para cada estacion se asignan n alimntadores donde n es un numero aleatorio ente 0 y 10
-			portal.estaciones[nEst[i]] = new Estacion.create(nEst[i],15000); // se crea instancia estacion con un tiempo de ruta de 15 s
-			for (var j = 0; j<= nAlimen; j++){
-				portal.estaciones[nEst[i]].associatedAlim.push(new Alimentador.create(j)); // se crean instancias del objeto alimentador y se asignan a la i-esima estacion
+	background.src = "img/g4483.png";
+	for (let i in nEst){ // se utiliza el let para declarar a i como una variable global, se itera por cada id de las estaciones para crear instancias de objeto estacion
+		var button; 
+		var nAlimen = Math.floor(Math.random()*10); // para cada estacion se asignan n alimntadores donde n es un numero aleatorio ente 0 y 10
+		portal.estaciones[nEst[i]] = new Estacion.create(nEst[i],15000); // se crea instancia estacion con un tiempo de ruta de 15 s
+		for (var j = 0; j<= nAlimen; j++){
+			portal.estaciones[nEst[i]].associatedAlim.push(new Alimentador.create(j)); // se crean instancias del objeto alimentador y se asignan a la i-esima estacion
+		}
+		button = $("<button type=\"button\" class=\"btn btn-primary btn-sm list-group-item list-group-item-action\"></button>").text(nEst[i]); // se definen los botones del panel derecho que lista cada ruta alimentadora
+		button.attr('id',nEst[i]); //  se le asigna un id a cada boton para su posterior localizacion
+		button.click(function(){ // se defin el comportamiento de cada boton una vez se hace click en él 
+			$("#alimentadores").empty(); //se borran todos los botones de alimentador previos para que no se sumen
+			var estacion = portal.estaciones[nEst[i]]; // se obtiene el objeto estacion para el boton en cuestion 
+			for(var alimen in estacion.associatedAlim){ // se itera por los laimentadores asocioados con esta estación
+				content = $("<button type=\"button\" class=\"btn btn-primary btn-sm  \"></button>").text(alimen); // se crea el boton para cada alimentador
+				$("#alimentadores").append(content); // se agrega a index.html en la etiqueta con id #alimentadores
 			}
-			button = $("<button type=\"button\" class=\"btn btn-primary btn-sm list-group-item list-group-item-action\"></button>").text(nEst[i]); // se definen los botones del panel derecho que lista cada ruta alimentadora
-			button.attr('id',nEst[i]); //  se le asigna un id a cada boton para su posterior localizacion
-			button.click(function(){ // se defin el comportamiento de cada boton una vez se hace click en él 
-				$("#alimentadores").empty(); //se borran todos los botones de alimentador previos para que no se sumen
-				var estacion = portal.estaciones[nEst[i]]; // se obtiene el objeto estacion para el boton en cuestion 
-				for(var alimen in estacion.associatedAlim){ // se itera por los laimentadores asocioados con esta estación
-					content = $("<button type=\"button\" class=\"btn btn-primary btn-sm  \"></button>").text(alimen); // se crea el boton para cada alimentador
-					$("#alimentadores").append(content); // se agrega a index.html en la etiqueta con id #alimentadores
-				}
-			});
-			$("#estaciones").append(button); // se agrega a index.html en la etiqueta con id #estaciones
+		});
+		$("#estaciones").append(button); // se agrega a index.html en la etiqueta con id #estaciones
 			
 
 
@@ -97,8 +98,8 @@ window.onload = function () { // función que dirá que hacer apenas cargue la p
 	update();
 	function update(){
 		context.clearRect(0,0,width,height);
-		context.rect(0,0,width,height);
-		context.fill(); // se pinta de negro el canvas
+		context.drawImage(background,33,0);
+
 		
 		}
 	}
